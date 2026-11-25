@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OAuth Callback — Heist &amp; History</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0b0f17; color: #f1f5f9; max-width: 680px; margin: 60px auto; padding: 0 24px; line-height: 1.6; }
+    .box { background: #131a26; border: 1px solid #263248; border-radius: 12px; padding: 20px; margin-top: 20px; word-break: break-all; font-family: ui-monospace, monospace; color: #ffd43b; }
+    button { margin-top: 14px; background: #ffd43b; color: #0b0f17; border: 0; border-radius: 8px; padding: 10px 18px; font-weight: 700; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Heist &amp; History OAuth Callback</h1>
+  <p id="status">Reading authorization response...</p>
+  <div id="codeBox" class="box" style="display:none;"></div>
+  <button id="copyBtn" style="display:none;" onclick="navigator.clipboard.writeText(document.getElementById('codeBox').textContent)">Copy Code</button>
+  <script>
+    const qs = new URLSearchParams(window.location.search);
+    const code = qs.get("code");
+    const err = qs.get("error");
+    const statusEl = document.getElementById("status");
+    const boxEl = document.getElementById("codeBox");
+    const btnEl = document.getElementById("copyBtn");
+    if (code) {
+      statusEl.textContent = "Authorization complete! Copy this code and paste it back into Antigravity:";
+      boxEl.textContent = code;
+      boxEl.style.display = "block";
+      btnEl.style.display = "inline-block";
+    } else if (err) {
+      statusEl.textContent = "Authorization error: " + err + " (" + (qs.get("error_description") || "") + ")";
+    } else {
+      statusEl.textContent = "Callback endpoint ready.";
+    }
+  </script>
+</body>
+</html>
